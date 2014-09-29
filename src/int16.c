@@ -21,19 +21,19 @@ freely, subject to the following restrictions:
 #include <stdlib.h>
 #include <stdio.h>
 #include <libcortex.h>
-
+#define SetField(x,n) ((((uint16)a[x]) << n))
 
 void decompose_uint16_le(uint16 a, byte16_ptr b) {
 	b[0] = (byte)a;
 	b[1] = (byte)(a >> 8);
 }
 uint16 compose_uint16_le(byte16_ptr a) {
-	return (((uint16)a[1] << 8) | ((uint16)a[0]));
+	return SetField(1, 8) | SetField(0, 0);
 }
 void decompose_uint16_be(uint16 a, byte16_ptr b) {
 	b[0] = (byte)(a >> 8);
 	b[1] = (byte)(a);
 }
 uint16 compose_uint16_be(byte16_ptr a) {
-	return (((uint16)a[0] << 8) | ((uint16)a[1]));
+	return SetField(0, 8) | SetField(1, 0);
 }

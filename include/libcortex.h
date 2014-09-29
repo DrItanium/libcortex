@@ -100,19 +100,21 @@ void decompose_uint32_le(uint32, byte32_ptr);
 
 uint32 compose_uint32_be(byte32_ptr);
 void decompose_uint32_be(uint32, byte32_ptr);
-
+/* 40-bit operations */
 uint40 compose_uint40_le(byte40_ptr);
 void decompose_uint40_le(uint40, byte40_ptr);
 
 uint40 compose_uint40_be(byte40_ptr);
 void decompose_uint40_be(uint40, byte40_ptr);
 
+/* 48-bit operations */
 uint48 compose_uint48_le(byte48_ptr);
 void decompose_uint48_le(uint48, byte48_ptr);
 
 uint48 compose_uint48_be(byte48_ptr);
 void decompose_uint48_be(uint48, byte48_ptr);
 
+/* 56-bit operations */
 uint56 compose_uint56_le(byte56_ptr);
 void decompose_uint56_le(uint56, byte56_ptr);
 
