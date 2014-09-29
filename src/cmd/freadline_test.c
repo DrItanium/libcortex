@@ -17,44 +17,22 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include<stdio.h>
-#include<stdlib.h>
-#include<libcortex.h>
+// test out the freadline function
+#include <stdio.h>
+#include <stdlib.h>
+#include <libcortex.h>
 
-enum {
-#ifndef CapacityIncreaseSize
-	CapacityIncreaseSize = 80,
-#endif
-	EndConstants
-};
-char* freadline(FILE* f) {
-	char* output;
-	int curr, count, capacity;
-	curr = 0;
-	output = NULL;
-	if (f && !feof(f)) {
-		count = 0;
-		capacity = CapacityIncreaseSize;
-		output = calloc(CapacityIncreaseSize, sizeof(char));
-		for (curr = fgetc(f); curr != '\n' && curr != EOF; curr = fgetc(f)) {
-			if (count == capacity) {
-				capacity += CapacityIncreaseSize;
-				output = realloc(output, capacity);
-				if (output == NULL) {
-					break;
-				} 
-			}
-			output[count] = curr;
-			count++;
-		}
-		if (count == capacity) {
-			output = realloc(output, capacity+1);
-			if (output != NULL) {
-				output[count+1] = 0;
-			}
-		}
+int main() {
+	char* line;
+	int result;
+	line = freadline(stdin);
+	if (line != NULL) {
+		printf("Input line: %s\n", line);
+		free(line);
+		result = 0;
+	} else {
+		printf("Couldn't readline!\n");
+		result = 1;
 	}
-	return output;
+	return result;
 }
-
-
