@@ -17,45 +17,23 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdint.h>
-#include<libcortex.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <libcortex.h>
 
-enum {
-#ifndef CapacityIncreaseSize
-	CapacityIncreaseSize = 80,
-#endif
-	EndConstants
-};
-char* freadline(FILE* f) {
-	char* output;
-	int curr, count, capacity;
-	curr = 0;
-	output = NULL;
-	if (f && !feof(f)) {
-		count = 0;
-		capacity = CapacityIncreaseSize;
-		output = calloc(CapacityIncreaseSize, sizeof(char));
-		for (curr = fgetc(f); curr != '\n' && curr != EOF; curr = fgetc(f)) {
-			if (count == capacity) {
-				capacity += CapacityIncreaseSize;
-				output = realloc(output, capacity);
-				if (output == NULL) {
-					break;
-				} 
-			}
-			output[count] = curr;
-			count++;
-		}
-		if (count == capacity) {
-			output = realloc(output, capacity+1);
-			if (output != NULL) {
-				output[count+1] = 0;
-			}
-		}
-	}
-	return output;
+
+void decompose_uint16_le(uint16 a, byte16_ptr b) {
+	b[0] = (byte)a;
+	b[1] = (byte)(a >> 8);
 }
-
-
+uint16 compose_uint16_le(byte16_ptr a) {
+	return (((uint16)a[1] << 8) | ((uint16)a[0]));
+}
+void decompose_uint16_be(uint16 a, byte16_ptr b) {
+	b[0] = (byte)(a >> 8);
+	b[1] = (byte)(a);
+}
+uint16 compose_uint16_be(byte16_ptr a) {
+	return (((uint16)a[0] << 8) | ((uint16)a[1]));
+}

@@ -17,45 +17,30 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdint.h>
-#include<libcortex.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <libcortex.h>
 
-enum {
-#ifndef CapacityIncreaseSize
-	CapacityIncreaseSize = 80,
-#endif
-	EndConstants
-};
-char* freadline(FILE* f) {
-	char* output;
-	int curr, count, capacity;
-	curr = 0;
-	output = NULL;
-	if (f && !feof(f)) {
-		count = 0;
-		capacity = CapacityIncreaseSize;
-		output = calloc(CapacityIncreaseSize, sizeof(char));
-		for (curr = fgetc(f); curr != '\n' && curr != EOF; curr = fgetc(f)) {
-			if (count == capacity) {
-				capacity += CapacityIncreaseSize;
-				output = realloc(output, capacity);
-				if (output == NULL) {
-					break;
-				} 
-			}
-			output[count] = curr;
-			count++;
-		}
-		if (count == capacity) {
-			output = realloc(output, capacity+1);
-			if (output != NULL) {
-				output[count+1] = 0;
-			}
-		}
-	}
-	return output;
+void decompose_uint24_le(uint24 a, byte24_ptr b) {
+	b[0] = (byte)a;
+	b[1] = (byte)(a >> 8);
+	b[2] = (byte)(a >> 16);
+}
+uint24 compose_uint24_le(byte24_ptr a) {
+	return	(uint24)((((uint24)(a[2] << 16)) |
+				((uint24)(a[1] << 8)) |
+				((uint24)(a[0]))) & UINT24_MAX);
 }
 
+void decompose_uint24_be(uint24 a, byte24_ptr b) {
+	b[0] = (byte)(a >> 16);
+	b[1] = (byte)(a >> 8);
+	b[2] = (byte)a;
+}
+uint24 compose_uint24_be(byte24_ptr a) {
+	return	(uint24)((((uint24)(a[0] << 16)) |
+				((uint24)(a[1] << 8)) |
+				((uint24)(a[2]))) & UINT24_MAX);
+}
 
