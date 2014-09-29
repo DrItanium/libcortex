@@ -21,24 +21,27 @@ freely, subject to the following restrictions:
 #include <stdlib.h>
 #include <stdio.h>
 #include <libcortex.h>
-#define SetField(x,n) ((((uint24)a[x]) << n))
+#define SetField(x,n) ((((uint40)a[x]) << n))
 
-void decompose_uint24_le(uint24 a, byte24_ptr b) {
+void decompose_uint40_le(uint40 a, byte40_ptr b) {
 	b[0] = (byte)a;
 	b[1] = (byte)(a >> 8);
 	b[2] = (byte)(a >> 16);
+	b[3] = (byte)(a >> 24);
+	b[4] = (byte)(a >> 32);
 }
-uint24 compose_uint24_le(byte24_ptr a) {
-	return (SetField(2, 16) | SetField(1, 8) | SetField(0, 0)) & UINT24_MAX;
+uint40 compose_uint40_le(byte40_ptr a) {
+	return (SetField(4, 32) | SetField(3, 24) | SetField(2, 16) | SetField(1, 8) | SetField(0, 0)) & UINT40_MAX;
 }
 
-void decompose_uint24_be(uint24 a, byte24_ptr b) {
-	b[0] = (byte)(a >> 16);
-	b[1] = (byte)(a >> 8);
-	b[2] = (byte)a;
+void decompose_uint40_be(uint40 a, byte40_ptr b) {
+	b[0] = (byte)(a >> 32);
+	b[1] = (byte)(a >> 24);
+	b[2] = (byte)(a >> 16);
+	b[3] = (byte)(a >> 8);
+	b[4] = (byte)a;
 }
-uint24 compose_uint24_be(byte24_ptr a) {
-	return (SetField(0, 16) | SetField(1, 8) | SetField(2, 0)) & UINT24_MAX;
+uint40 compose_uint40_be(byte40_ptr a) {
+	return (SetField(0, 32) | SetField(1, 24) | SetField(2, 16) | SetField(3, 8) | SetField(4, 0))  & UINT40_MAX;
 }
 #undef SetField
-
