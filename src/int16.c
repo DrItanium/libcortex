@@ -37,3 +37,4 @@ void decompose_uint16_be(uint16 a, byte16_ptr b) {
 uint16 compose_uint16_be(byte16_ptr a) {
 	return SetField(0, 8) | SetField(1, 0);
 }
+#undef SetField
