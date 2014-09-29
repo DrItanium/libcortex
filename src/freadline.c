@@ -17,10 +17,42 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#include<stdio.h>
+#include<libcortex.h>
+enum {
+#ifndef CapacityIncreaseSize
+	CapacityIncreaseSize = 80,
+#endif
+	EndConstants
+};
+char* freadline(FILE* f) {
+	char* output;
+	int curr, count, capacity;
+	curr = 0;
+	output = NULL;
+	if (f && !feof(f)) {
+		count = 0;
+		capacity = CapacityIncreaseSize;
+		output = calloc(CapacityIncreaseSize, sizeof(char));
+		for (curr = fgetc(f); curr != '\n' && curr != EOF; curr = fgetc(f)) {
+			if (count == capacity) {
+				capacity += CapacityIncreaseSize;
+				output = realloc(output, capacity);
+				if (output == NULL) {
+					break;
+				} 
+			}
+			output[count] = curr;
+			count++;
+		}
+		if (count == capacity) {
+			output = realloc(output, capacity+1);
+			if (output != NULL) {
+				output[count+1] = 0;
+			}
+		}
+	}
+	return output;
+}
 
-#ifndef _LIBCORTEX_H
-#define _LIBCORTEX_H
 
-char* freadline(FILE*);
-
-#endif /* _LIBCORTEX_H */
