@@ -37,4 +37,34 @@ void decompose_uint16_be(uint16 a, byte16_ptr b) {
 uint16 compose_uint16_be(byte16_ptr a) {
 	return SetField(0, 8) | SetField(1, 0);
 }
+
+int fread_uint16_le(FILE* a, uint16_ptr b) {
+	int r0, r1;
+	byte16 container;
+	r0 = fgetc(a);
+	r1 = fgetc(a);
+	if (r0 == EOF || r1 == EOF) {
+		return 0;
+	} else {
+		container[0] = r0;
+		container[1] = r1;
+		*b = compose_uint16_le(container);
+		return 1;
+	}
+
+}
+int fread_uint16_be(FILE* a, uint16_ptr b) {
+	int r0, r1;
+	byte16 container;
+	r0 = fgetc(a);
+	r1 = fgetc(a);
+	if (r0 == EOF || r1 == EOF) {
+		return 0;
+	} else {
+		container[0] = r0;
+		container[1] = r1;
+		*b = compose_uint16_be(container);
+		return 1;
+	}
+}
 #undef SetField
