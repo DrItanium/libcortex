@@ -38,33 +38,37 @@ uint16 compose_uint16_be(byte16_ptr a) {
 	return SetField(0, 8) | SetField(1, 0);
 }
 
-int fread_uint16_le(FILE* a, uint16_ptr b) {
-	int r0, r1;
-	byte16 container;
+static int fread_uint16_base(FILE*, byte16_ptr); 
+int fread_uint16_base(FILE* a, byte16_ptr b) {
+	int r0, r1; 
+	// endianness is not important at this point as we are just reading bytes
 	r0 = fgetc(a);
 	r1 = fgetc(a);
 	if (r0 == EOF || r1 == EOF) {
 		return 0;
 	} else {
-		container[0] = r0;
-		container[1] = r1;
-		*b = compose_uint16_le(container);
+		b[0] = r0;
+		b[1] = r1;
 		return 1;
 	}
-
 }
-int fread_uint16_be(FILE* a, uint16_ptr b) {
-	int r0, r1;
+int fread_uint16_le(FILE* a, uint16_ptr b) {
+	int result;
 	byte16 container;
-	r0 = fgetc(a);
-	r1 = fgetc(a);
-	if (r0 == EOF || r1 == EOF) {
-		return 0;
-	} else {
-		container[0] = r0;
-		container[1] = r1;
-		*b = compose_uint16_be(container);
-		return 1;
+	result = fread_uint16_base(a, container);
+	if(result) {
+		*b = compose_uint16_le(container);
 	}
+	return result;
+}
+
+int fread_uint16_be(FILE* a, uint16_ptr b) {
+	int result;
+	byte16 container;
+	result = fread_uint16_base(a, container);
+	if(result) {
+		*b = compose_uint16_be(container);
+	}
+	return result;
 }
 #undef SetField
