@@ -50,4 +50,50 @@ void decompose_uint64_be(uint64 a, byte64_ptr b) {
 uint64 compose_uint64_be(byte64_ptr a) {
 	return (SetField(0, 56) | SetField(1, 48) | SetField(2, 40) | SetField(3, 32) | SetField(4, 24) | SetField(5, 16) | SetField(6, 8) | SetField(7, 0));
 }
+
+static int fread_uint64_base(FILE*, byte64_ptr); 
+int fread_uint64_base(FILE* a, byte64_ptr b) {
+	int r0, r1, r2, r3, r4, r5, r6, r7;
+	// endianness is not important at this point as we are just reading bytes
+	r0 = fgetc(a);
+	r1 = fgetc(a);
+	r2 = fgetc(a);
+	r3 = fgetc(a);
+	r4 = fgetc(a);
+	r5 = fgetc(a);
+	r6 = fgetc(a);
+	r7 = fgetc(a);
+	if (r0 == EOF || r1 == EOF || r2 == EOF || r3 == EOF || r4 == EOF || r5 == EOF || r6 == EOF || r7 == EOF) {
+		return 0;
+	} else {
+		b[0] = r0;
+		b[1] = r1;
+		b[2] = r2;
+		b[3] = r3;
+		b[4] = r4;
+		b[5] = r5;
+		b[6] = r6;
+		b[7] = r7;
+		return 1;
+	}
+}
+int fread_uint64_le(FILE* a, uint64_ptr b) {
+	int result;
+	byte64 container;
+	result = fread_uint64_base(a, container);
+	if(result) {
+		*b = compose_uint64_le(container);
+	}
+	return result;
+}
+
+int fread_uint64_be(FILE* a, uint64_ptr b) {
+	int result;
+	byte64 container;
+	result = fread_uint64_base(a, container);
+	if(result) {
+		*b = compose_uint64_be(container);
+	}
+	return result;
+}
 #undef SetField

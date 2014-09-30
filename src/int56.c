@@ -48,4 +48,47 @@ void decompose_uint56_be(uint56 a, byte56_ptr b) {
 uint56 compose_uint56_be(byte56_ptr a) {
 	return (SetField(0, 48) | SetField(1, 40) | SetField(2, 32) | SetField(3, 24) | SetField(4, 16) | SetField(5, 8) | SetField(6, 0))  & UINT56_MAX;
 }
+static int fread_uint56_base(FILE*, byte56_ptr); 
+int fread_uint56_base(FILE* a, byte56_ptr b) {
+	int r0, r1, r2, r3, r4, r5, r6;
+	// endianness is not important at this point as we are just reading bytes
+	r0 = fgetc(a);
+	r1 = fgetc(a);
+	r2 = fgetc(a);
+	r3 = fgetc(a);
+	r4 = fgetc(a);
+	r5 = fgetc(a);
+	r6 = fgetc(a);
+	if (r0 == EOF || r1 == EOF || r2 == EOF || r3 == EOF || r4 == EOF || r5 == EOF || r6 == EOF) {
+		return 0;
+	} else {
+		b[0] = r0;
+		b[1] = r1;
+		b[2] = r2;
+		b[3] = r3;
+		b[4] = r4;
+		b[5] = r5;
+		b[6] = r6;
+		return 1;
+	}
+}
+int fread_uint56_le(FILE* a, uint56_ptr b) {
+	int result;
+	byte56 container;
+	result = fread_uint56_base(a, container);
+	if(result) {
+		*b = compose_uint56_le(container);
+	}
+	return result;
+}
+
+int fread_uint56_be(FILE* a, uint56_ptr b) {
+	int result;
+	byte56 container;
+	result = fread_uint56_base(a, container);
+	if(result) {
+		*b = compose_uint56_be(container);
+	}
+	return result;
+}
 #undef SetField

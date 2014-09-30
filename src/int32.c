@@ -41,9 +41,10 @@ void decompose_uint32_be(uint32 a, byte32_ptr b) {
 uint32 compose_uint32_be(byte32_ptr a) {
 	return	SetField(0, 24) | SetField(1, 16) | SetField(2, 8) | SetField(3, 0);
 }
-int fread_uint32_le(FILE* a, uint32_ptr b) {
+static int fread_uint32_base(FILE*, byte32_ptr); 
+int fread_uint32_base(FILE* a, byte32_ptr b) {
 	int r0, r1, r2, r3;
-	byte32 container;
+	// endianness is not important at this point as we are just reading bytes
 	r0 = fgetc(a);
 	r1 = fgetc(a);
 	r2 = fgetc(a);
@@ -51,32 +52,31 @@ int fread_uint32_le(FILE* a, uint32_ptr b) {
 	if (r0 == EOF || r1 == EOF || r2 == EOF || r3 == EOF) {
 		return 0;
 	} else {
-		container[0] = r0;
-		container[1] = r1;
-		container[2] = r2;
-		container[3] = r3;
-		*b = compose_uint32_le(container);
+		b[0] = r0;
+		b[1] = r1;
+		b[2] = r2;
+		b[3] = r3;
 		return 1;
 	}
-
 }
-int fread_uint32_be(FILE* a, uint32_ptr b) {
-	int r0, r1, r2, r3;
+int fread_uint32_le(FILE* a, uint32_ptr b) {
+	int result;
 	byte32 container;
-	r0 = fgetc(a);
-	r1 = fgetc(a);
-	r2 = fgetc(a);
-	r3 = fgetc(a);
-	if (r0 == EOF || r1 == EOF || r2 == EOF || r3 == EOF) {
-		return 0;
-	} else {
-		container[0] = r0;
-		container[1] = r1;
-		container[2] = r2;
-		container[3] = r3;
-		*b = compose_uint32_be(container);
-		return 1;
+	result = fread_uint32_base(a, container);
+	if(result) {
+		*b = compose_uint32_le(container);
 	}
+	return result;
+}
+
+int fread_uint32_be(FILE* a, uint32_ptr b) {
+	int result;
+	byte32 container;
+	result = fread_uint32_base(a, container);
+	if(result) {
+		*b = compose_uint32_be(container);
+	}
+	return result;
 }
 #undef SetField
 

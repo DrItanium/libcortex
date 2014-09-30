@@ -46,4 +46,45 @@ void decompose_uint48_be(uint48 a, byte48_ptr b) {
 uint48 compose_uint48_be(byte48_ptr a) {
 	return (SetField(0, 40) | SetField(1, 32) | SetField(2, 24) | SetField(3, 16) | SetField(4, 8) | SetField(5, 0))  & UINT48_MAX;
 }
+static int fread_uint48_base(FILE*, byte48_ptr); 
+int fread_uint48_base(FILE* a, byte48_ptr b) {
+	int r0, r1, r2, r3, r4, r5;
+	// endianness is not important at this point as we are just reading bytes
+	r0 = fgetc(a);
+	r1 = fgetc(a);
+	r2 = fgetc(a);
+	r3 = fgetc(a);
+	r4 = fgetc(a);
+	r5 = fgetc(a);
+	if (r0 == EOF || r1 == EOF || r2 == EOF || r3 == EOF || r4 == EOF || r5 == EOF) {
+		return 0;
+	} else {
+		b[0] = r0;
+		b[1] = r1;
+		b[2] = r2;
+		b[3] = r3;
+		b[4] = r4;
+		b[5] = r5;
+		return 1;
+	}
+}
+int fread_uint48_le(FILE* a, uint48_ptr b) {
+	int result;
+	byte48 container;
+	result = fread_uint48_base(a, container);
+	if(result) {
+		*b = compose_uint48_le(container);
+	}
+	return result;
+}
+
+int fread_uint48_be(FILE* a, uint48_ptr b) {
+	int result;
+	byte48 container;
+	result = fread_uint48_base(a, container);
+	if(result) {
+		*b = compose_uint48_be(container);
+	}
+	return result;
+}
 #undef SetField
