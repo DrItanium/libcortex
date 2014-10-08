@@ -5,7 +5,7 @@ LIBCORTEX_OUT = libcortex.a
 all: options ${LIBCORTEX_OUT} 
 
 options:
-	@echo iris build options:
+	@echo libcortex build options:
 	@echo "CFLAGS   = ${CFLAGS}"
 	@echo "LDFLAGS  = ${LDFLAGS}"
 	@echo "CC       = ${CC}"
