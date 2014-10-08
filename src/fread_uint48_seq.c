@@ -21,33 +21,8 @@ freely, subject to the following restrictions:
 #include <stdlib.h>
 #include <stdio.h>
 #include <libcortex.h>
-#define SetField(x,n) ((((uint48)a[x]) << n))
 
-void decompose_uint48_le(uint48 a, byte48_ptr b) {
-	b[0] = (byte)a;
-	b[1] = (byte)(a >> 8);
-	b[2] = (byte)(a >> 16);
-	b[3] = (byte)(a >> 24);
-	b[4] = (byte)(a >> 32);
-	b[5] = (byte)(a >> 40);
-}
-uint48 compose_uint48_le(byte48_ptr a) {
-	return (SetField(5, 40) | SetField(4, 32) | SetField(3, 24) | SetField(2, 16) | SetField(1, 8) | SetField(0, 0)) & UINT48_MAX;
-}
-
-void decompose_uint48_be(uint48 a, byte48_ptr b) {
-	b[0] = (byte)(a >> 40);
-	b[1] = (byte)(a >> 32);
-	b[2] = (byte)(a >> 24);
-	b[3] = (byte)(a >> 16);
-	b[4] = (byte)(a >> 8);
-	b[5] = (byte)a;
-}
-uint48 compose_uint48_be(byte48_ptr a) {
-	return (SetField(0, 40) | SetField(1, 32) | SetField(2, 24) | SetField(3, 16) | SetField(4, 8) | SetField(5, 0))  & UINT48_MAX;
-}
-static int fread_uint48_base(FILE*, byte48_ptr); 
-int fread_uint48_base(FILE* a, byte48_ptr b) {
+int fread_uint48_seq(FILE* a, byte48_ptr b) {
 	int r0, r1, r2, r3, r4, r5;
 	// endianness is not important at this point as we are just reading bytes
 	r0 = fgetc(a);
@@ -68,23 +43,3 @@ int fread_uint48_base(FILE* a, byte48_ptr b) {
 		return 1;
 	}
 }
-int fread_uint48_le(FILE* a, uint48_ptr b) {
-	int result;
-	byte48 container;
-	result = fread_uint48_base(a, container);
-	if(result) {
-		*b = compose_uint48_le(container);
-	}
-	return result;
-}
-
-int fread_uint48_be(FILE* a, uint48_ptr b) {
-	int result;
-	byte48 container;
-	result = fread_uint48_base(a, container);
-	if(result) {
-		*b = compose_uint48_be(container);
-	}
-	return result;
-}
-#undef SetField
