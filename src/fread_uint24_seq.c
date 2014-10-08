@@ -21,27 +21,8 @@ freely, subject to the following restrictions:
 #include <stdlib.h>
 #include <stdio.h>
 #include <libcortex.h>
-#define SetField(x,n) ((((uint24)a[x]) << n))
 
-void decompose_uint24_le(uint24 a, byte24_ptr b) {
-	b[0] = (byte)a;
-	b[1] = (byte)(a >> 8);
-	b[2] = (byte)(a >> 16);
-}
-uint24 compose_uint24_le(byte24_ptr a) {
-	return (SetField(2, 16) | SetField(1, 8) | SetField(0, 0)) & UINT24_MAX;
-}
-
-void decompose_uint24_be(uint24 a, byte24_ptr b) {
-	b[0] = (byte)(a >> 16);
-	b[1] = (byte)(a >> 8);
-	b[2] = (byte)a;
-}
-uint24 compose_uint24_be(byte24_ptr a) {
-	return (SetField(0, 16) | SetField(1, 8) | SetField(2, 0)) & UINT24_MAX;
-}
-static int fread_uint24_base(FILE*, byte24_ptr); 
-int fread_uint24_base(FILE* a, byte24_ptr b) {
+int fread_uint24_seq(FILE* a, byte24_ptr b) {
 	int r0, r1, r2; 
 	// endianness is not important at this point as we are just reading bytes
 	r0 = fgetc(a);
@@ -56,24 +37,4 @@ int fread_uint24_base(FILE* a, byte24_ptr b) {
 		return 1;
 	}
 }
-int fread_uint24_le(FILE* a, uint24_ptr b) {
-	int result;
-	byte24 container;
-	result = fread_uint24_base(a, container);
-	if(result) {
-		*b = compose_uint24_le(container);
-	}
-	return result;
-}
-
-int fread_uint24_be(FILE* a, uint24_ptr b) {
-	int result;
-	byte24 container;
-	result = fread_uint24_base(a, container);
-	if(result) {
-		*b = compose_uint24_be(container);
-	}
-	return result;
-}
-#undef SetField
 
