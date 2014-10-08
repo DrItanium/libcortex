@@ -20,6 +20,7 @@ freely, subject to the following restrictions:
 // test out the freadline function
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <libcortex.h>
 
 int main() {
