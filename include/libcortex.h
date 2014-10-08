@@ -154,6 +154,15 @@ void decompose_uint64_be(uint64, byte64_ptr);
 int fread_uint64_le(FILE*, uint64_ptr);
 int fread_uint64_be(FILE*, uint64_ptr);
 
+/* endian ignorant functions - read in sequentially */
+int fread_uint16_seq(FILE*, byte16_ptr);
+int fread_uint24_seq(FILE*, byte24_ptr);
+int fread_uint32_seq(FILE*, byte32_ptr);
+int fread_uint40_seq(FILE*, byte40_ptr);
+int fread_uint48_seq(FILE*, byte48_ptr);
+int fread_uint56_seq(FILE*, byte56_ptr);
+int fread_uint64_seq(FILE*, byte64_ptr);
+
 
 /* File operations */
 char* freadline(FILE*);
