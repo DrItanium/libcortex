@@ -21,31 +21,7 @@ freely, subject to the following restrictions:
 #include <stdlib.h>
 #include <stdio.h>
 #include <libcortex.h>
-#define SetField(x,n) ((((uint40)a[x]) << n))
-
-void decompose_uint40_le(uint40 a, byte40_ptr b) {
-	b[0] = (byte)a;
-	b[1] = (byte)(a >> 8);
-	b[2] = (byte)(a >> 16);
-	b[3] = (byte)(a >> 24);
-	b[4] = (byte)(a >> 32);
-}
-uint40 compose_uint40_le(byte40_ptr a) {
-	return (SetField(4, 32) | SetField(3, 24) | SetField(2, 16) | SetField(1, 8) | SetField(0, 0)) & UINT40_MAX;
-}
-
-void decompose_uint40_be(uint40 a, byte40_ptr b) {
-	b[0] = (byte)(a >> 32);
-	b[1] = (byte)(a >> 24);
-	b[2] = (byte)(a >> 16);
-	b[3] = (byte)(a >> 8);
-	b[4] = (byte)a;
-}
-uint40 compose_uint40_be(byte40_ptr a) {
-	return (SetField(0, 32) | SetField(1, 24) | SetField(2, 16) | SetField(3, 8) | SetField(4, 0))  & UINT40_MAX;
-}
-static int fread_uint40_base(FILE*, byte40_ptr); 
-int fread_uint40_base(FILE* a, byte40_ptr b) {
+int fread_uint40_seq(FILE* a, byte40_ptr b) {
 	int r0, r1, r2, r3, r4;
 	// endianness is not important at this point as we are just reading bytes
 	r0 = fgetc(a);
@@ -64,24 +40,3 @@ int fread_uint40_base(FILE* a, byte40_ptr b) {
 		return 1;
 	}
 }
-int fread_uint40_le(FILE* a, uint40_ptr b) {
-	int result;
-	byte40 container;
-	result = fread_uint40_base(a, container);
-	if(result) {
-		*b = compose_uint40_le(container);
-	}
-	return result;
-}
-
-int fread_uint40_be(FILE* a, uint40_ptr b) {
-	int result;
-	byte40 container;
-	result = fread_uint40_base(a, container);
-	if(result) {
-		*b = compose_uint40_be(container);
-	}
-	return result;
-}
-
-#undef SetField
