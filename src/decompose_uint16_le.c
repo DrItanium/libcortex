@@ -22,7 +22,7 @@ freely, subject to the following restrictions:
 #include <stdio.h>
 #include <libcortex.h>
 
-void decompose_uint16_le(uint16 a, byte16_ptr b) {
+void decompose_uint16_le(uint16 a, byte* b) {
 	b[0] = (byte)a;
 	b[1] = (byte)(a >> 8);
 }

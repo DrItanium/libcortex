@@ -23,7 +23,7 @@ freely, subject to the following restrictions:
 #include <libcortex.h>
 
 
-void decompose_uint64_be(uint64 a, byte64_ptr b) {
+void decompose_uint64_be(uint64 a, byte* b) {
 	b[0] = (byte)(a >> 56);
 	b[1] = (byte)(a >> 48);
 	b[2] = (byte)(a >> 40);

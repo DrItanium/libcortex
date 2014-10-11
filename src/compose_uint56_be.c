@@ -23,7 +23,7 @@ freely, subject to the following restrictions:
 #include <libcortex.h>
 #define SetField(x,n) ((((uint56)a[x]) << n))
 
-uint56 compose_uint56_be(byte56_ptr a) {
+uint56 compose_uint56_be(byte* a) {
 	return (SetField(0, 48) | SetField(1, 40) | SetField(2, 32) | SetField(3, 24) | SetField(4, 16) | SetField(5, 8) | SetField(6, 0))  & UINT56_MAX;
 }
 #undef SetField

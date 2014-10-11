@@ -22,7 +22,7 @@ freely, subject to the following restrictions:
 #include <stdio.h>
 #include <libcortex.h>
 
-int fread_uint48_seq(FILE* a, byte48_ptr b) {
+int fread_uint48_seq(FILE* a, byte* b) {
 	int r0, r1, r2, r3, r4, r5;
 	// endianness is not important at this point as we are just reading bytes
 	r0 = fgetc(a);

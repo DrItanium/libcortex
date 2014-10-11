@@ -21,7 +21,7 @@ freely, subject to the following restrictions:
 #include <stdlib.h>
 #include <stdio.h>
 #include <libcortex.h>
-int fread_uint40_seq(FILE* a, byte40_ptr b) {
+int fread_uint40_seq(FILE* a, byte* b) {
 	int r0, r1, r2, r3, r4;
 	// endianness is not important at this point as we are just reading bytes
 	r0 = fgetc(a);

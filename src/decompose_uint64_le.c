@@ -22,7 +22,7 @@ freely, subject to the following restrictions:
 #include <stdio.h>
 #include <libcortex.h>
 
-void decompose_uint64_le(uint64 a, byte64_ptr b) {
+void decompose_uint64_le(uint64 a, byte* b) {
 	b[0] = (byte)a;
 	b[1] = (byte)(a >> 8);
 	b[2] = (byte)(a >> 16);
