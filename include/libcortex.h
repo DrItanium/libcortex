@@ -87,6 +87,9 @@ uint16 compose_uint16_be(byte*);
 int fread_uint16_le(FILE*, uint16_ptr);
 int fread_uint16_be(FILE*, uint16_ptr);
 
+int fwrite_uint16_le(FILE*, uint16_ptr);
+int fwrite_uint16_be(FILE*, uint16_ptr);
+
 /* 24-bit operations */
 
 void decompose_uint24_le(uint24, byte*);
@@ -98,6 +101,9 @@ uint24 compose_uint24_be(byte*);
 int fread_uint24_le(FILE*, uint24_ptr);
 int fread_uint24_be(FILE*, uint24_ptr);
 
+int fwrite_uint24_le(FILE*, uint24_ptr);
+int fwrite_uint24_be(FILE*, uint24_ptr);
+
 /* 32-bit operations */
 uint32 compose_uint32_le(byte*);
 void decompose_uint32_le(uint32, byte*);
@@ -107,6 +113,9 @@ void decompose_uint32_be(uint32, byte*);
 
 int fread_uint32_le(FILE*, uint32_ptr);
 int fread_uint32_be(FILE*, uint32_ptr);
+
+int fwrite_uint32_le(FILE*, uint32_ptr);
+int fwrite_uint32_be(FILE*, uint32_ptr);
 /* 40-bit operations */
 uint40 compose_uint40_le(byte*);
 void decompose_uint40_le(uint40, byte*);
@@ -116,6 +125,9 @@ void decompose_uint40_be(uint40, byte*);
 
 int fread_uint40_le(FILE*, uint40_ptr);
 int fread_uint40_be(FILE*, uint40_ptr);
+
+int fwrite_uint40_le(FILE*, uint40_ptr);
+int fwrite_uint40_be(FILE*, uint40_ptr);
 
 /* 48-bit operations */
 uint48 compose_uint48_le(byte*);
@@ -127,6 +139,8 @@ void decompose_uint48_be(uint48, byte*);
 int fread_uint48_le(FILE*, uint48_ptr);
 int fread_uint48_be(FILE*, uint48_ptr);
 
+int fwrite_uint48_le(FILE*, uint48_ptr);
+int fwrite_uint48_be(FILE*, uint48_ptr);
 /* 56-bit operations */
 uint56 compose_uint56_le(byte*);
 void decompose_uint56_le(uint56, byte*);
@@ -136,6 +150,9 @@ void decompose_uint56_be(uint56, byte*);
 
 int fread_uint56_le(FILE*, uint56_ptr);
 int fread_uint56_be(FILE*, uint56_ptr);
+
+int fwrite_uint56_le(FILE*, uint56_ptr);
+int fwrite_uint56_be(FILE*, uint56_ptr);
 /* 64-bit operations */
 uint64 compose_uint64_le(byte*);
 void decompose_uint64_le(uint64, byte*);
@@ -146,7 +163,10 @@ void decompose_uint64_be(uint64, byte*);
 int fread_uint64_le(FILE*, uint64_ptr);
 int fread_uint64_be(FILE*, uint64_ptr);
 
-/* endian ignorant functions - read in sequentially */
+int fwrite_uint64_le(FILE*, uint64_ptr);
+int fwrite_uint64_be(FILE*, uint64_ptr);
+
+/* endian ignorant functions - read in/write out sequentially */
 int fread_uint16_seq(FILE*, byte*);
 int fread_uint24_seq(FILE*, byte*);
 int fread_uint32_seq(FILE*, byte*);
@@ -154,6 +174,14 @@ int fread_uint40_seq(FILE*, byte*);
 int fread_uint48_seq(FILE*, byte*);
 int fread_uint56_seq(FILE*, byte*);
 int fread_uint64_seq(FILE*, byte*);
+
+int fwrite_uint16_seq(FILE*, byte*);
+int fwrite_uint24_seq(FILE*, byte*);
+int fwrite_uint32_seq(FILE*, byte*);
+int fwrite_uint40_seq(FILE*, byte*);
+int fwrite_uint48_seq(FILE*, byte*);
+int fwrite_uint56_seq(FILE*, byte*);
+int fwrite_uint64_seq(FILE*, byte*);
 
 
 /* File operations */
